@@ -1,0 +1,99 @@
+import "@nomiclabs/hardhat-ethers"
+import "@nomiclabs/hardhat-waffle"
+import "@nomiclabs/hardhat-web3"
+import "@nomiclabs/hardhat-etherscan"
+import "hardhat-gas-reporter"
+import "solidity-coverage"
+import "hardhat-typechain"
+import "hardhat-deploy"
+ 
+// You need to export an object to set up your config
+// Go to https://hardhat.org/config/ to learn more
+
+import { HardhatUserConfig } from "hardhat/config"
+import dotenv from "dotenv"
+
+dotenv.config()
+
+let config: HardhatUserConfig = {
+  defaultNetwork: "mainnet",
+  networks: {
+    coverage: {
+      url: "http://127.0.0.1:8555",
+    },
+    mainnet: {
+      url: "https://bsc-dataseed.binance.org",
+      chainId: 56,
+      gasPrice: 20000000000,
+      accounts: [`${process.env.PRIVATE_KEY}`]
+    },
+    testnet: {
+      url: "https://data-seed-prebsc-1-s1.binance.org:8545",
+      chainId: 97,
+      gasPrice: 10000000000,
+      accounts: [`${process.env.PRIVATE_KEY}`]
+    }    
+  },
+  paths: {
+    artifacts: "./build/artifacts",
+    cache: "./build/cache",
+  },
+  solidity: {
+    compilers: [
+      {
+        version: "0.6.12",
+        settings: {
+          optimizer: {
+            enabled: true,
+            runs: 10000,
+          },
+        },
+      },
+      {
+        version: "0.5.16",
+      },
+    ],
+  },
+  typechain: {
+    outDir: "./build/typechain/",
+    target: "ethers-v5",
+  },
+  gasReporter: {
+    currency: "USD",
+    gasPrice: 21,
+  },
+  mocha: {
+    timeout: 200000,
+  },
+  namedAccounts: {
+    deployer: {
+      default: 0, // here this will by default take the first account as deployer
+      1: 0, // similarly on mainnet it will take the first account as deployer. Note though that depending on how hardhat network are configured, the account 0 on one network can be different than on another
+    },
+  },
+}
+
+if (process.env.ETHERSCAN_API) {
+  config = { ...config, etherscan: { apiKey: process.env.ETHERSCAN_API } }
+}
+
+if (process.env.ACCOUNT_PRIVATE_KEYS) {
+  config.networks = {
+    ...config.networks,
+    mainnet: {
+      ...config.networks?.mainnet,
+      accounts: JSON.parse(process.env.ACCOUNT_PRIVATE_KEYS),
+    },
+  }
+}
+
+if (process.env.FORK_MAINNET && config.networks) {
+  config.networks.hardhat = {
+    forking: {
+      url: process.env.ALCHEMY_API ? process.env.ALCHEMY_API : "",
+    },
+    chainId: 1,
+  }
+}
+
+export default config
