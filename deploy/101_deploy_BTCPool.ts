@@ -8,21 +8,20 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   // Constructor arguments
   const TOKEN_ADDRESSES = [
-    (await get("TBTC")).address,
-    (await get("WBTC")).address,
-    (await get("RENBTC")).address,
-    (await get("SBTC")).address,
+    "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c", //BTCB
+    "0xfce146bf3146100cfe5db4129cf6c82b0ef4ad8c", //renBTC,
+    "0x19e0E8413DEe3AfFd94bdd42519d01935a0CF0c2" //oBTC
   ]
-  const TOKEN_DECIMALS = [18, 8, 8, 18]
-  const LP_TOKEN_NAME = "Saddle tBTC/WBTC/renBTC/sBTC"
-  const LP_TOKEN_SYMBOL = "saddleTWRenSBTC"
+  const TOKEN_DECIMALS = [18, 8, 8]
+  const LP_TOKEN_NAME = "Derive BTCB/renBTC/oBTC"
+  const LP_TOKEN_SYMBOL = "deriveBTC"
   const INITIAL_A = 200
   const SWAP_FEE = 4e6 // 4bps
   const ADMIN_FEE = 0
   const WITHDRAW_FEE = 0
   const ALLOWLIST_ADDRESS = (await get("Allowlist")).address
 
-  await deploy("SaddleBTCPool", {
+  await deploy("DeriveBTCPool", {
     from: deployer,
     log: true,
     contract: "SwapGuarded",
@@ -43,11 +42,11 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     skipIfAlreadyDeployed: true,
   })
 
-  const lpTokenAddress = (await read("SaddleBTCPool", "swapStorage")).lpToken
+  const lpTokenAddress = (await read("DeriveBTCPool", "swapStorage")).lpToken
   log(`BTC pool LP Token at ${lpTokenAddress}`)
 
-  await save("SaddleBTCPoolLPToken", {
-    abi: (await get("TBTC")).abi, // Generic ERC20 ABI
+  await save("DeriveBTCPoolLPToken", {
+    abi: (await get("BTCB")).abi, // Generic ERC20 ABI
     address: lpTokenAddress,
   })
 }

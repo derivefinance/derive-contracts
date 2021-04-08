@@ -7,19 +7,20 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const { deployer } = await getNamedAccounts()
 
   // Manually check if the pool is already deployed
-  let saddleUSDPool = await getOrNull("SaddleUSDPool")
-  if (saddleUSDPool) {
-    log(`reusing "SaddleUSDPool" at ${saddleUSDPool.address}`)
+  let deriveUSDPool = await getOrNull("DeriveUSDPool")
+  if (deriveUSDPool) {
+    log(`reusing "DeriveUSDPool" at ${deriveUSDPool.address}`)
   } else {
     // Constructor arguments
     const TOKEN_ADDRESSES = [
-      (await get("DAI")).address,
-      (await get("USDC")).address,
-      (await get("USDT")).address,
+      "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3", //DAI
+      "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", //USDC
+      "0x55d398326f99059ff775485246999027b3197955", //USDT
+      "0x6BF2Be9468314281cD28A94c35f967caFd388325" //oUSD
     ]
-    const TOKEN_DECIMALS = [18, 6, 6]
-    const LP_TOKEN_NAME = "Saddle DAI/USDC/USDT"
-    const LP_TOKEN_SYMBOL = "saddleUSD"
+    const TOKEN_DECIMALS = [18, 18, 18, 18]
+    const LP_TOKEN_NAME = "Derive DAI/USDC/USDT/OUSD"
+    const LP_TOKEN_SYMBOL = "deriveUSD"
     const INITIAL_A = 200
     const SWAP_FEE = 4e6 // 4bps
     const ADMIN_FEE = 0
@@ -47,17 +48,17 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     console.log(
       `deployed USD pool clone (targeting "SwapFlashLoan") at ${usdSwapAddress}`,
     )
-    await save("SaddleUSDPool", {
+    await save("DeriveUSDPool", {
       abi: (await get("SwapFlashLoan")).abi,
       address: usdSwapAddress,
     })
   }
 
-  const lpTokenAddress = (await read("SaddleUSDPool", "swapStorage")).lpToken
+  const lpTokenAddress = (await read("DeriveUSDPool", "swapStorage")).lpToken
   log(`USD pool LP Token at ${lpTokenAddress}`)
 
-  await save("SaddleUSDPoolLPToken", {
-    abi: (await get("TBTC")).abi, // Generic ERC20 ABI
+  await save("DeriveUSDPoolLPToken", {
+    abi: (await get("DAI")).abi, // Generic ERC20 ABI
     address: lpTokenAddress,
   })
 }

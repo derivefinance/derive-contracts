@@ -6,6 +6,9 @@ import "hardhat-gas-reporter"
 import "solidity-coverage"
 import "hardhat-typechain"
 import "hardhat-deploy"
+ 
+// You need to export an object to set up your config
+// Go to https://hardhat.org/config/ to learn more
 
 import { HardhatUserConfig } from "hardhat/config"
 import dotenv from "dotenv"
@@ -13,15 +16,23 @@ import dotenv from "dotenv"
 dotenv.config()
 
 let config: HardhatUserConfig = {
-  defaultNetwork: "hardhat",
+  defaultNetwork: "mainnet",
   networks: {
     coverage: {
       url: "http://127.0.0.1:8555",
     },
     mainnet: {
-      url: process.env.ALCHEMY_API,
-      gasPrice: 140 * 1000000000,
+      url: "https://bsc-dataseed.binance.org",
+      chainId: 56,
+      gasPrice: 20000000000,
+      accounts: [`${process.env.PRIVATE_KEY}`]
     },
+    testnet: {
+      url: "https://data-seed-prebsc-1-s1.binance.org:8545",
+      chainId: 97,
+      gasPrice: 10000000000,
+      accounts: [`${process.env.PRIVATE_KEY}`]
+    }    
   },
   paths: {
     artifacts: "./build/artifacts",

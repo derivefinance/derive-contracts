@@ -9,7 +9,7 @@ import "../interfaces/ISwap.sol";
 /**
  * @title SynthSwapper
  * @notice Replacement of Virtual Synths in favor of gas savings. Allows swapping synths via the Synthetix protocol
- * or Saddle's pools. The `Bridge.sol` contract will deploy minimal clones of this contract upon initiating
+ * or Derive's pools. The `Bridge.sol` contract will deploy minimal clones of this contract upon initiating
  * any cross-asset swaps.
  */
 contract SynthSwapper {

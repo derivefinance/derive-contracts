@@ -6,10 +6,9 @@ import { DeployResult } from "hardhat-deploy/dist/types"
 import { BigNumber } from "ethers"
 
 const BTC_TOKENS_ARGS: { [token: string]: any[] } = {
-  TBTC: ["tBTC", "TBTC", "18"],
-  WBTC: ["Wrapped Bitcoin", "WBTC", "8"],
-  RENBTC: ["renBTC", "RENBTC", "8"],
-  SBTC: ["sBTC", "SBTC", "18"],
+  BTCB: ["Binance-Peg BTCB Token", "BTCB", "18"],
+  RENBTC: ["renBTC", "RENBTC", "18"],
+  OBTC: ["oBTC", "OBTC", "18"],
 }
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
