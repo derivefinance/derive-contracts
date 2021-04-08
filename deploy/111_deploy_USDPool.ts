@@ -13,10 +13,10 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   } else {
     // Constructor arguments
     const TOKEN_ADDRESSES = [
-      "0x1af3f329e8be154074d8769d1ffa4ee058b1dbc3", //DAI
-      "0x8ac76a51cc950d9822d68b83fe1ad97b32cd580d", //USDC
-      "0x55d398326f99059ff775485246999027b3197955", //USDT
-      "0x6BF2Be9468314281cD28A94c35f967caFd388325" //oUSD
+      (await get("DAI")).address,
+      (await get("USDC")).address,
+      (await get("USDT")).address,
+      (await get("OUSD")).address,
     ]
     const TOKEN_DECIMALS = [18, 18, 18, 18]
     const LP_TOKEN_NAME = "Derive DAI/USDC/USDT/OUSD"
