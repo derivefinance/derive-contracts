@@ -6,7 +6,7 @@ import "hardhat-gas-reporter"
 import "solidity-coverage"
 import "hardhat-typechain"
 import "hardhat-deploy"
- 
+
 // You need to export an object to set up your config
 // Go to https://hardhat.org/config/ to learn more
 
@@ -25,14 +25,14 @@ let config: HardhatUserConfig = {
       url: "https://bsc-dataseed.binance.org",
       chainId: 56,
       gasPrice: 20000000000,
-      accounts: [`${process.env.PRIVATE_KEY}`]
+      accounts: [`${process.env.PRIVATE_KEY}`],
     },
     testnet: {
       url: "https://data-seed-prebsc-1-s1.binance.org:8545",
       chainId: 97,
       gasPrice: 10000000000,
-      accounts: [`${process.env.PRIVATE_KEY}`]
-    }    
+      accounts: [`${process.env.PRIVATE_KEY}`],
+    },
   },
   paths: {
     artifacts: "./build/artifacts",
