@@ -5,6 +5,7 @@ import { MULTISIG_ADDRESS } from "../utils/accounts"
 import path from "path"
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+  const { deployments } = hre
   const { log } = deployments
   log(`skipping ${path.basename(__filename)}`)
 
