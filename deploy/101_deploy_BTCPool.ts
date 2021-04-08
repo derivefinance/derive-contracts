@@ -8,9 +8,9 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
 
   // Constructor arguments
   const TOKEN_ADDRESSES = [
-    "0x7130d2a12b9bcbfae4f2634d864a1ee1ce3ead9c", //BTCB
-    "0xfce146bf3146100cfe5db4129cf6c82b0ef4ad8c", //renBTC,
-    "0x19e0E8413DEe3AfFd94bdd42519d01935a0CF0c2" //oBTC
+    (await get("BTCB")).address,
+    (await get("RENBTC")).address,
+    (await get("OBTC")).address,
   ]
   const TOKEN_DECIMALS = [18, 8, 8]
   const LP_TOKEN_NAME = "Derive BTCB/renBTC/oBTC"
