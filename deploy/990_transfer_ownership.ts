@@ -5,6 +5,10 @@ import { MULTISIG_ADDRESS } from "../utils/accounts"
 import path from "path"
 
 const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
+  const { log } = deployments
+  log(`skipping ${path.basename(__filename)}`)
+
+  /*
   const { deployments, getNamedAccounts, getChainId } = hre
   const { execute, log, read } = deployments
   const { deployer } = await getNamedAccounts()
@@ -47,6 +51,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   } else {
     log(`deployment is not on mainnet. skipping ${path.basename(__filename)}`)
   }
+ */
 }
 export default func
 func.tags = ["TransferOwnership"]
