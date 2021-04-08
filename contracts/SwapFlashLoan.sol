@@ -128,15 +128,16 @@ contract SwapFlashLoan is Swap {
             params
         );
 
-        uint256 availableLiquidityAfter = token.balanceOf(address(this));
+        uint256 availableLiquidityAfter =
+            token.balanceOf(address(this)).sub(protocolBalanceBefore);
         require(
             availableLiquidityAfter >= availableLiquidityBefore.add(amountFee),
             "flashLoan fee is not met"
         );
 
-        swapStorage.balances[tokenIndex] = availableLiquidityAfter
-            .sub(protocolBalanceBefore)
-            .sub(protocolFee);
+        swapStorage.balances[tokenIndex] = availableLiquidityAfter.sub(
+            protocolFee
+        );
         emit FlashLoan(receiver, tokenIndex, amount, amountFee, protocolFee);
     }
 
