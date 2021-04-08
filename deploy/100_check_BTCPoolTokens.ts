@@ -7,7 +7,7 @@ import { BigNumber } from "ethers"
 
 const BTC_TOKENS_ARGS: { [token: string]: any[] } = {
   BTCB: ["Binance-Peg BTCB Token", "BTCB", "18"],
-  RENBTC: ["renBTC", "RENBTC", "18"],
+  RENBTC: ["renBTC", "RENBTC", "8"],
   OBTC: ["oBTC", "OBTC", "18"],
 }
 

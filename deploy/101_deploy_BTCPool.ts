@@ -12,7 +12,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     (await get("RENBTC")).address,
     (await get("OBTC")).address,
   ]
-  const TOKEN_DECIMALS = [18, 18, 18]
+  const TOKEN_DECIMALS = [18, 8, 18]
   const LP_TOKEN_NAME = "Derive BTCB/renBTC/oBTC"
   const LP_TOKEN_SYMBOL = "deriveBTC"
   const INITIAL_A = 200
