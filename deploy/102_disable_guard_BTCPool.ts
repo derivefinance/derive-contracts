@@ -10,7 +10,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
   const isBTCPoolGuarded = await read("DeriveBTCPool", "isGuarded")
 
   // Disable the guarded phase launch
-  /*if (isBTCPoolGuarded) {
+  if (isBTCPoolGuarded) {
     if (currentOwner == deployer) {
       log(`disabling BTC pool guard from deployer ${deployer}`)
       await execute(
@@ -23,7 +23,7 @@ const func: DeployFunction = async function (hre: HardhatRuntimeEnvironment) {
     }
   } else {
     log(`btc pool guard is already disabled`)
-  }*/
+  }
 }
 export default func
 func.dependencies = ["BTCPool"]
