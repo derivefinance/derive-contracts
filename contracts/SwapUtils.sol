@@ -847,6 +847,25 @@ library SwapUtils {
         return dy;
     }
 
+
+    function isEqual(uint[] memory arr) internal returns(bool) {
+        uint first = arr[0];
+        for (uint i = 1; i < arr.length; i++) {
+            if (first != arr[i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    function notZero(uint[] memory arr) internal returns(bool) {
+        for (uint i = 0; i < arr.length; i++) {
+            if (arr[i] == 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /**
      * @notice Add liquidity to the pool
      * @param self Swap struct to read from and write to
@@ -865,6 +884,9 @@ library SwapUtils {
             amounts.length == self.pooledTokens.length,
             "Amounts must match pooled tokens"
         );
+        require(notZero(amounts), "Amount can't be zero");
+        require(isEqual(amounts), "Amounts not equal");
+
 
         uint256[] memory fees = new uint256[](self.pooledTokens.length);
 
@@ -878,26 +900,20 @@ library SwapUtils {
         uint256[] memory newBalances = self.balances;
 
         for (uint256 i = 0; i < self.pooledTokens.length; i++) {
-            require(
-                totalSupply != 0 || amounts[i] > 0,
-                "Must supply all tokens in pool"
+ 
+            // Transfer tokens first to see if a fee was charged on transfer
+            uint256 beforeBalance =
+                self.pooledTokens[i].balanceOf(address(this));
+            self.pooledTokens[i].safeTransferFrom(
+                msg.sender,
+                address(this),
+                amounts[i]
             );
 
-            // Transfer tokens first to see if a fee was charged on transfer
-            if (amounts[i] != 0) {
-                uint256 beforeBalance =
-                    self.pooledTokens[i].balanceOf(address(this));
-                self.pooledTokens[i].safeTransferFrom(
-                    msg.sender,
-                    address(this),
-                    amounts[i]
-                );
-
-                // Update the amounts[] with actual transfer amount
-                amounts[i] = self.pooledTokens[i].balanceOf(address(this)).sub(
-                    beforeBalance
-                );
-            }
+            // Update the amounts[] with actual transfer amount
+            amounts[i] = self.pooledTokens[i].balanceOf(address(this)).sub(
+                beforeBalance
+            );
 
             newBalances[i] = self.balances[i].add(amounts[i]);
         }
