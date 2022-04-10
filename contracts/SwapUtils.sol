@@ -897,6 +897,7 @@ library SwapUtils {
         if (totalSupply != 0) {
             v.d0 = getD(self);
         }
+
         uint256[] memory newBalances = self.balances;
 
         for (uint256 i = 0; i < self.pooledTokens.length; i++) {
@@ -1031,6 +1032,8 @@ library SwapUtils {
             minAmounts.length == self.pooledTokens.length,
             "minAmounts must match poolTokens"
         );
+        require(notZero(minAmounts), "minAmount can't be zero");
+        require(isEqual(minAmounts), "minAmounts not equal");
 
         uint256[] memory amounts =
             _calculateRemoveLiquidity(self, msg.sender, amount);
